@@ -6,10 +6,11 @@ var parseLTSVLog = function(logStr){
     var re_tab = /\s*\t\s*/;
     var re_colon = /\s*:\s*/;
 
+    // object to return
+    var records = [];
+    
     // 空白文字列は削除
     var lines = logStr.split(re_nl).filter(function(e){return e != "";});
-
-    var records = [];
     
     for (var i=0; i < lines.length; i++) {
         var fields = lines[i].split(re_tab).filter(function(e){return e != "";});
@@ -17,15 +18,13 @@ var parseLTSVLog = function(logStr){
         var str_json = "";
 
         for (var j=0; j < fields.length; j++) {
+            // valuega suuti no baai koron tukenai
             var f = fields[j].split(re_colon);
             var key = '\"' + f[0] + '\"';
             var value = (f[1].match(/\D/gi))? ('\"' + f[1] + '\"') : f[1];
-            // var value = f[1];
-            // value = (value.match(/\D/gi))? ('\"' + value + '\"') : value;
             str_json += key + ":" + value;
 
-            // , の処理
-            // JSON.parseは , にうるさい…
+            // ','の処理. JSON.parseは','にうるさい…
             if (j != fields.length - 1) {
                 str_json += ",";
             }
@@ -39,3 +38,21 @@ var parseLTSVLog = function(logStr){
 
 
 // 課題 JS-2: 関数 `createLogTable` を記述してください
+var createLogTable = function(dst, obj){
+    var table = document.createElement("table");
+    var head = "", body = "";
+    var keys = [];
+    for (var key in obj[0]) {
+        head += "<th>" + key + "</th>";
+        keys.push(key);
+    }
+    for (var i=0; i < obj.length; i++) {
+        body += "<tr>";
+        for (var j=0; j < keys.length; j++) {
+            body += "<td>" + obj[i][keys[j]] + "</td>";
+        }
+        body += "</tr>";
+    }
+    table.innerHTML = "<thead><tr>" + head + "</tr></thead>" + "<tbody>" + body + "</tbody>";
+    dst.appendChild(table);
+};

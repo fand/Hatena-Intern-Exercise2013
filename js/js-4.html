@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Hatena-Intern-Exercise2013 : JavaScript</title>
+  <link rel="stylesheet" href="js-3.css" />
+</head>
+<body>
+  <section>
+    <h1>感想文</h1>
+    <h2>課題 JS-4 : ライブラリを使用する</h2>
+    <p>課題 JS-3を jQuery, underscore.js を使って書き直しました。</p>
+    <p>underscore.js、名前は知っていたけど使うのは初めてです。mapとかreduceとか使えて便利そう</p>
+    <p>でも書き直したら分かりにくいコードになってしまった。。。</p>
+    <p>あとmapにhash渡すときの引数が(key, value)じゃなくて(value, key)なのは絶対に許さない</p>
+    <div>
+      <textarea id="log-input" cols="64" rows="10">path:/&#x0009;reqtime_microsec:123456
+path:/uname&#x0009;reqtime_microsec:500000
+path:/help&#x0009;reqtime_microsec:234222
+path:/&#x0009;reqtime_microsec:94843
+</textarea>
+      <div><input value="表に出力する" type="button" id="submit-button" /></div>
+    </div>
+    <div id="table-container"></div>
+  </section>
+  <script src="lib/jquery-2.0.3.min.js"></script>
+  <script src="lib/underscore-min.js"></script>
+  <script src="main.js"></script>
+  <script src="js-4.js"></script>
+</body>
+</html>

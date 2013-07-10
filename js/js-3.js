@@ -9,7 +9,7 @@ $("submit-button").addEventListener("click", function(){
     }
 });
 
-// getElementById
+// alias for getElementById
 function $(id){
     return document.getElementById(id);
 }

@@ -25,10 +25,12 @@ sub group_by_user {
     #     grep { $_->user eq $user } @{$self->{logs}};
     # } @users;
     
-    my %ret = map {$_, 1} @users;
-#    my %ret = {};
+    my %ret = map {$_, ()} @users;
     foreach my $user (@users) {
-        my @log_user = grep { $_->user eq $user } @{$self->{logs}};
+        
+        map{
+                my @log_user = grep { $_->user eq $user } @{$self->{logs}};
+        }
         $ret{$user} = \@log_user;
     }
     # warn Dumper %ret;

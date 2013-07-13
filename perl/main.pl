@@ -1,6 +1,7 @@
 use strict;
 use warnings;
 
+use Data::Dumper;
 use Log;
 
 my $log = Log->new(
@@ -12,6 +13,8 @@ my $log = Log->new(
     size    => '2326',
     referer => 'http://www.hatena.ne.jp/',
 );
+
+warn Dumper $log;
 print $log->method . "\n";
 print $log->path . "\n";
 print $log->protocol . "\n";

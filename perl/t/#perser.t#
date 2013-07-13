@@ -37,8 +37,8 @@ is_deeply $parsed->[2]->to_hash, {
     'time' => '2013-07-03T23:33:10',
     'method' => 'GET',
     'referer' => 'http://www.example.com/start.html',
-    'size' => '9999',
     'uri' => 'http://127.0.0.1/apache_pb.gif'
+    'size' => '9999',
 };
 
 done_testing();

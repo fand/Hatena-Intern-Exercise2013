@@ -12,21 +12,21 @@ sub new {
 
 sub method {
     my $self = shift;
-    my @req = split(/ /, $self->{req});
+    my @req = split(/\s/, $self->{req});
     return $req[0];
 }
 
 
 sub path {
     my $self = shift;
-    my @req = split(/ /, $self->{req});
+    my @req = split(/\s/, $self->{req});
     return $req[1];
 }
 
 
 sub protocol {
     my $self = shift;
-    my @req = split(/ /, $self->{req});
+    my @req = split(/\s/, $self->{req});
     return $req[2];
 }
 
@@ -48,8 +48,22 @@ sub time {
     my $self = shift;
     my $dt = DateTime->from_epoch( epoch => $self->{epoch}, time_zone => 'GMT' );
     return $dt->ymd . "T" . $dt->hms;
-    
-#    return "2013-07-01T15:59:50";
+}
+
+
+# for LogCounter
+sub user {
+    my $self = shift;
+    return (defined $self->{user} && $self->{user} ne "-")? $self->{user} : "guest";
+}
+
+sub status {
+    my $self = shift;
+    return $self->{status};
+}
+
+sub to_hash {
+    shift;
 }
 
 

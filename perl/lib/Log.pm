@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use DateTime;  # for time
 
+
 sub new {
     my ($class, %args) = @_;
     my $self = bless {%args}, $class;
@@ -32,9 +33,10 @@ sub protocol {
 
 
 sub uri {
-    my $self = shift;
-    
+    my $self = shift;   
     my $protocol = $self->protocol;
+
+    # add scheme for the protocol
     my $head = "";
     if ($protocol =~ /https/ig) { $head = "https://"; }
     elsif ($protocol =~ /http/ig) { $head = "http://"; }
@@ -60,27 +62,6 @@ sub user {
 sub status {
     my $self = shift;
     return $self->{status};
-}
-
-
-sub to_hash {
-    my $self = shift;
-    my %tmp = (
-        status => $self->status,
-        time => $self->time,
-        size => $self->{size},
-        uri => $self->uri,
-        user => $self->{user},
-        method => $self->method,
-        referer => $self->{referer},
-    );
-    my %hash;
-    for (keys %tmp) {
-        if (defined $tmp{$_} && $tmp{$_} ne "-") {
-            $hash{$_} = $tmp{$_};
-        }
-    }
-    return  \%hash;
 }
 
 

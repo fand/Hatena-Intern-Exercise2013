@@ -20,18 +20,12 @@ sub group_by_user {
         sort keys %h;
     };
     
-    # map {
-    #     my $user = $_;
-    #     grep { $_->user eq $user } @{$self->{logs}};
-    # } @users;
-    
     my %ret = map {$_, 1} @users;
-#    my %ret = {};
     foreach my $user (@users) {
         my @log_user = grep { $_->user eq $user } @{$self->{logs}};
         $ret{$user} = \@log_user;
     }
-    # warn Dumper %ret;
+
     return \%ret;
 }
 

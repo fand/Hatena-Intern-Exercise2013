@@ -1,8 +1,8 @@
 package LogCounter;
 use strict;
 use warnings;
-
 use Data::Dumper;
+
 
 sub new {
     my ($class, $logs) = @_;

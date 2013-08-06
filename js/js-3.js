@@ -1,9 +1,9 @@
-// 課題 JS-3 の実装をここに記述してください。
+// submitボタンを押すとテーブルを表示
 $("submit-button").addEventListener("click", function(){
     var log = $("log-input").value;
     var dst = $("table-container");
 
-    // make sure there is only 1 table.
+    // テーブルが重複していないことを確認し、要素を追加
     if (dst.innerHTML == "") {
         createLogTable(dst, parseLTSVLog(log));
     }

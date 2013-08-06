@@ -59,9 +59,34 @@ sub user {
     return (defined $self->{user} && $self->{user} ne "-")? $self->{user} : "guest";
 }
 
+
 sub status {
     my $self = shift;
     return $self->{status};
+}
+
+
+# Optional function
+# Returns hash except for 'undef' and '-'
+sub to_hash {
+    my $self = shift;
+    my %tmp = (
+        status => $self->status,
+        time => $self->time,
+        size => $self->{size},
+        uri => $self->uri,
+        user => $self->{user},
+        method => $self->method,
+        referer => $self->{referer},
+        );
+    
+    my %hash;
+    for (keys %tmp) {
+        if (defined $tmp{$_} && $tmp{$_} ne "-") {
+            $hash{$_} = $tmp{$_};
+        }
+    }
+    return  \%hash;
 }
 
 

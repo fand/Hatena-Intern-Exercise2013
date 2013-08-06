@@ -50,12 +50,13 @@ function createLogTable(dst, obj){
 };
 
 
+// submitボタンを押すとテーブルを表示
 $(function(){
     $("#submit-button").click(function(){
         var log = $("#log-input").val();
         var dst = $("#table-container");
         
-        // make sure there is only 1 table.
+        // テーブルが重複していないことを確認し、要素を追加        
         if (dst.html() == "") {
             createLogTable(dst, parseLTSVLog(log));
         }

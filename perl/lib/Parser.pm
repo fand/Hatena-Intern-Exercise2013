@@ -2,7 +2,6 @@ package Parser;
 use strict;
 use warnings;
 use Data::Dumper;
-
 use Log;
 
 
@@ -35,5 +34,6 @@ sub parse {
     
     return \@ret;
 }
+
 
 1;

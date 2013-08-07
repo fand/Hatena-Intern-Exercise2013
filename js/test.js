@@ -91,3 +91,87 @@ QUnit.test("`createLogTable` 関数の動作確認", function () {
     // `QUnit.test` 関数や `QUnit.asyncTest` 関数を用いて別に定義しても良いです。
 
 });
+
+
+
+
+QUnit.module("課題 JS-5");
+
+QUnit.test("関数定義の確認", function () {
+    QUnit.ok(typeof transformUrl === "function", "`transformUrl` という名前の関数がある");       QUnit.ok(typeof parseRes === "function", "`parseRes` という名前の関数がある"); 
+    QUnit.ok(typeof parseDat === "function", "`parseDat` という名前の関数がある");
+});
+
+QUnit.test("`transformUrl` 関数の動作確認", function () {
+
+    QUnit.deepEqual(transformUrl(""), "", "空行が期待通りパースされる");
+    QUnit.deepEqual(
+        transformUrl("http://anago.2ch.net/gline/dat/1373774042.dat"),
+        "http://anago.2ch.net/gline/dat/1373774042.dat",
+        "`.dat`で終わるURLが期待通りパースされる");
+
+    QUnit.deepEqual(transformUrl("http://anago.2ch.net/test/read.cgi/gline/1373774042/"),
+                    "http://anago.2ch.net/gline/dat/1373774042.dat",
+                   "スレURLが期待通りパースされる");
+
+    QUnit.deepEqual(transformUrl("anago.2ch.net/test/read.cgi/gline/1373774042/"),
+                    "http://anago.2ch.net/gline/dat/1373774042.dat",
+                   "`http://`抜きのスレURLが期待通りパースされる");
+    
+});
+
+QUnit.test("`parseRes` 関数の動作確認", function () {
+    var res = "水先案名無い人<><>2013/08/05(月) 16:51:19.61 ID:p6K6PJcx0<> だったらコラテラルダメージを見ればいいだろ <>";
+    var res_sage = "水先案名無い人<>sage<>2013/07/22(月) 23:47:35.02 ID:cZh3NA4U0<> ロードは何章まであるんですか？ <>";
+
+    var elem = $("#qunit-fixture");    
+    elem.append($(parseRes(res)));
+    QUnit.strictEqual(elem[0].childNodes.length, 2, "渡した要素に子ノードが 2 つ追加されている");
+
+    QUnit.strictEqual(elem[0].childNodes[0].tagName, "A", "子ノードの最初の要素は a 要素");
+    QUnit.strictEqual(elem[0].childNodes[1].tagName, "DIV", "子ノードの最初の要素は div 要素");
+    QUnit.strictEqual(elem.find(".username")[0].tagName, "SPAN", "ユーザ名は span 要素");
+
+    elem.empty();
+    elem.append($(parseRes(res_sage)));
+    QUnit.strictEqual(elem.find(".username")[0].tagName, "A", "メールアドレス付きユーザは a 要素");
+});
+
+QUnit.test("`parseDat` 関数の動作確認", function () {           
+    // #qunit-fixture という要素は、QUnit が自動的に後片付けしてくれる要素
+    var fixtureElem = document.getElementById("qunit-fixture");
+    var elem = fixtureElem.appendChild(document.createElement("div"));
+
+    fixtureElem.appendChild(document.createElement("div"));
+
+
+    QUnit.strictEqual(elem.childNodes.length, 1, "渡した要素に子ノードが 1 つ追加されている");
+    var resElem = elem.lastChild;
+    QUnit.strictEqual(resElem.attr("class"), "TABLE", "渡した要素に追加された子ノードは res クラス");
+
+    QUnit.strictEqual(tableElem.childNodes.length, 2, "table 要素の子ノードは 2 個");
+    var theadElem = tableElem.firstChild;
+    QUnit.strictEqual(theadElem.tagName, "THEAD", "table 要素の 1 つ目の子ノードは thead 要素");
+    QUnit.strictEqual(theadElem.childNodes.length, 1, "thead 要素の子ノードは 1 個");
+    var tbodyElem = theadElem.nextSibling;
+    QUnit.strictEqual(tbodyElem.tagName, "TBODY", "table 要素の 2 つ目の子ノードは tbody 要素");
+    QUnit.strictEqual(tbodyElem.childNodes.length, 3, "tbody 要素の子ノードは 3 個");
+
+    var expectedTrElem = document.createElement("tr");
+
+    var actualTheadTrElem = theadElem.firstChild;
+    expectedTrElem.innerHTML = "<th>path</th><th>reqtime_microsec</th>";
+    QUnit.ok(expectedTrElem.isEqualNode(actualTheadTrElem),
+            "thead 要素の子要素の tr 要素の中身: " + expectedTrElem.innerHTML);
+
+    var actualTbodyTrElem = tbodyElem.firstChild;
+    expectedTrElem.innerHTML = "<td>/</td><td>400000</td>";
+    QUnit.ok(expectedTrElem.isEqualNode(actualTbodyTrElem),
+            "tbody 要素の子要素の 1 番目の tr 要素の中身: " + expectedTrElem.innerHTML);
+
+    actualTbodyTrElem = actualTbodyTrElem.nextSibling;
+    expectedTrElem.innerHTML = "<td>/uname</td><td>123456</td>";
+    QUnit.ok(expectedTrElem.isEqualNode(actualTbodyTrElem),
+            "tbody 要素の子要素の 2 番目の tr 要素の中身: " + expectedTrElem.innerHTML);
+
+});

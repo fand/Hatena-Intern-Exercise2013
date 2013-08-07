@@ -10,21 +10,27 @@
 <div id="wrapper">
   
   <div id="header">
-    <h3>2chburauza tukurimasita</h3>
-    <p></p>
+    <h3>2chブラウザ作りました</h3>
+    <p>
+      スレ読むだけです<br>
+      "js/cgi-bin/load.pl"を使って2chのdatファイルを読むのでperlないと動きません
+    </p>
+    <p>
+      テキストデータからHTML文書を…っていう、うーんtwitter? はてぶ? ニコニコのコメ？
+      どっかのサイトのRSS?…など考えましたが、しっくり来なかったので<br>
+      最近見てない2chを読むやつを作ることにしました
+    </p>
 
-    input thread url:<br>
+    スレURL（datファイルのURLでも可）:<br>
     <input type="url" id="url-input" value="http://anago.2ch.net/test/read.cgi/gline/1373774042/" />
     
     <br><br>
-    or input raw dat:<br>
+    or 生datを入力:<br>
     <textarea id="dat-input" cols="64" rows="10"></textarea>
 
     <input value="GO!" type="button" id="get-thread" />
 
   </div>
-  
-
   
   <div id="thread"></div>
   

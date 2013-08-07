@@ -1,14 +1,14 @@
-// transform thread url to .dat url
+// datファイルのURLを生成
 function transformUrl(url){
     if (url === "") { return url; }
     if (url.match(/.*\.dat$/)) { return url; }
 
-    // get rid of scheme "http://"
+    // スキーム"http://"を取り除く
     if (url.match(/:\/\//)) {
         url = url.split("://")[1];
     }
 
-    // get domain, board name, thread id
+    // ドメイン、板名、スレIDからURL生成
     var paths = url.match(/^(.*\.2ch\.net)\/.*\.cgi\/([^\/]*)\/([0-9]*)\/?/);
     url = "http://" + paths[1] + "/" + paths[2] + "/dat/" + paths[3] + ".dat";
         
@@ -16,49 +16,50 @@ function transformUrl(url){
 }
 
 
-// parse whole dat file
+// datファイルをパース
 function parseDat(dat){
     var thread = "";
     var lines = dat.split("\n");
 
-    // thread title
+    // スレタイ取得
     var title = lines[0].split("<>")[4];
     thread += "<div id='thread_title'>" + title + "</div>";
 
-    // parse responses
+    // 各レスをパース
     for (var i = 0; i < lines.length; i++) {
         if (lines[i] === "") {
             continue;
         }
-        var l = lines[i].split("<>");
-        thread += parseRes(l, i+1);
+        thread += parseRes(lines[i], i+1);
     }
 
     return thread;
 }
 
 
-// parse 1 res
+// レス1件をパース
 function parseRes(line, num){
 
     var res = "";
+    var l = line.split("<>");
     
-    // username, email
-    if (line[1] == "") {
-        res += "<span class='username'><b>" + line[0] + "</b></span>";
+    // ユーザ名、メールアドレス
+    // メールアドレスがある場合はmailtoリンク作成
+    if (l[1] == "") {
+        res += "<span class='username'><b>" + l[0] + "</b></span>";
     }
     else {
-        res += "<a class='username' href='mailto:'" + line[1] + "'><b>" + line[0] + "</b></a>";
+        res += "<a class='username' href='mailto:" + l[1] + "'><b>" + l[0] + "</b></a>";
     }
 
     // time, id
-    res += "<span class='time'>" + line[2] + "</span>";
+    res += "<span class='time'>" + l[2] + "</span>";
     
-    // text
-    var text = line[3];
+    // レス本文
+    var text = l[3];
     res += "<div class='res_text'>" + text + "</div>";
 
-    // res number
+    // レス番号
     res = "<a name='#" + num + "'></a><div class='res'>" + num + ": " + res + "</div>";
     
     return res;
@@ -67,7 +68,7 @@ function parseRes(line, num){
 
 $(function(){
     
-    // url
+    // ボタンを押すとスレ描画
     $("#get-thread").click(function(){
         
         $("#thread").html("<div id='loading'>Loading...</div>");

@@ -1,0 +1,54 @@
+#wrapper {
+    width: 960px;
+    margin: 0 auto;
+}
+
+
+#header {
+    width: 600px;
+    margin: 0 auto;
+}
+
+#url-input {
+    width: 600px;
+}
+
+#dat-input {
+    width: 600px;
+    height: 300px;
+}
+
+#get-thread {
+    display: block;
+    width: 90px;
+    height: 30px;
+    font-size: 20px;
+    margin: 20px auto;
+}
+
+
+
+#thread {
+    width: 960px;
+    background-color:#F0F4FF;
+    font-family: "ＭＳ Ｐゴシック",sans-serif;
+    font-size: 16px;
+    line-height: 18px;
+}
+
+#thread_title {
+    padding-top: 20px;
+    margin:20px;
+    font-size: 20px;
+    font-weight: 900;
+    color: #E55;
+}
+
+.res {
+    margin: 20px;
+}
+
+#loading {
+    text-align: center;
+    margin: 20px auto;
+}

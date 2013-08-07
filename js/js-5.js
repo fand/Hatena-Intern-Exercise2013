@@ -1,3 +1,21 @@
+// transform thread url to .dat url
+function transformUrl(url){
+    if (url === "") { return url; }
+    if (url.match(/.*\.dat$/)) { return url; }
+
+    // get rid of scheme "http://"
+    if (url.match(/:\/\//)) {
+        url = url.split("://")[1];
+    }
+
+    // get domain, board name, thread id
+    var paths = url.match(/^(.*\.2ch\.net)\/.*\.cgi\/([^\/]*)\/([0-9]*)\/?/);
+    url = "http://" + paths[1] + "/" + paths[2] + "/dat/" + paths[3] + ".dat";
+        
+    return url;
+}
+
+
 // parse whole dat file
 function parseDat(dat){
     var thread = "";
@@ -5,10 +23,13 @@ function parseDat(dat){
 
     // thread title
     var title = lines[0].split("<>")[4];
-    thread += "<div class='thread_title'>" + title + "<div>";
+    thread += "<div id='thread_title'>" + title + "</div>";
 
     // parse responses
     for (var i = 0; i < lines.length; i++) {
+        if (lines[i] === "") {
+            continue;
+        }
         var l = lines[i].split("<>");
         thread += parseRes(l, i+1);
     }
@@ -24,17 +45,18 @@ function parseRes(line, num){
     
     // username, email
     if (line[1] == "") {
-        res += "<span class='username'>" + line[0] + "</span>";
+        res += "<span class='username'><b>" + line[0] + "</b></span>";
     }
     else {
-        res += "<a class='username' href='mailto:'" + line[1] + "'>" + line[0] + "</a>";
+        res += "<a class='username' href='mailto:'" + line[1] + "'><b>" + line[0] + "</b></a>";
     }
 
     // time, id
     res += "<span class='time'>" + line[2] + "</span>";
     
     // text
-    res += "<div class='res_text'>" + line[3] + "</div>";
+    var text = line[3];
+    res += "<div class='res_text'>" + text + "</div>";
 
     // res number
     res = "<a name='#" + num + "'></a><div class='res'>" + num + ": " + res + "</div>";
@@ -46,31 +68,38 @@ function parseRes(line, num){
 $(function(){
     
     // url
-    $("#draw-url").click(function(){
-        var t_url = $("#url-input").val();
-        $.ajax({
-            type: "POST",
-            url: "cgi-bin/load.pl",
-            data: "url="+ t_url,
-            dataType: "text",
-            success: function(dat){
-                console.log(dat);                
-                $("#thread").html(parseDat(dat));
-            },
-            error: function(msg){
-                $("#thread").html("error: " + msg);                
-            }
-        });
-    });
-    
-    $("#draw-dat").click(function(){
-        var dat = $("#dat-input").val();
-        $("#thread").html(parseDat(dat));
+    $("#get-thread").click(function(){
+        
+        $("#thread").html("<div id='loading'>Loading...</div>");
+        var thread_url = transformUrl($("#url-input").val());
+        
+        if (thread_url !== "") {
+            
+            $.ajax({
+                type: "POST",
+                url: "cgi-bin/load.pl",
+                data: "url="+ thread_url,
+                dataType: "text",
+                success: function(dat){
+                    $("#thread").html(parseDat(dat));
+                    $("html, body").animate({
+                        scrollTop:  $("#thread").offset().top
+                    }, "slow");
+                },
+                error: function(msg){
+                    $("#thread").html("error: " + msg);                
+                }
+            });
+            
+        } else {
+            
+            var dat = $("#dat-input").val();
+            $("#thread").html(parseDat(dat));
+            $('html,body').animate({
+                scrollTop:  $("#thread").offset().top
+            }, 'slow');
+            
+        }
     });
 
-    
-    $().click(function(){
-        $("#dat-textarea").fadeIn();
-    });
-    
 });

@@ -40,7 +40,6 @@ sub uri {
     my $head = "";
     if ($protocol =~ /https/ig) { $head = "https://"; }
     elsif ($protocol =~ /http/ig) { $head = "http://"; }
-    elsif ($protocol =~ /ftp/ig) { $head = "ftp://"; }
     
     return $head . $self->{host} . $self->path;
 }

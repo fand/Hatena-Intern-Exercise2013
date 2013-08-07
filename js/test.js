@@ -137,41 +137,14 @@ QUnit.test("`parseRes` 関数の動作確認", function () {
     QUnit.strictEqual(elem.find(".username")[0].tagName, "A", "メールアドレス付きユーザは a 要素");
 });
 
-QUnit.test("`parseDat` 関数の動作確認", function () {           
-    // #qunit-fixture という要素は、QUnit が自動的に後片付けしてくれる要素
-    var fixtureElem = document.getElementById("qunit-fixture");
-    var elem = fixtureElem.appendChild(document.createElement("div"));
-
-    fixtureElem.appendChild(document.createElement("div"));
-
-
-    QUnit.strictEqual(elem.childNodes.length, 1, "渡した要素に子ノードが 1 つ追加されている");
-    var resElem = elem.lastChild;
-    QUnit.strictEqual(resElem.attr("class"), "TABLE", "渡した要素に追加された子ノードは res クラス");
-
-    QUnit.strictEqual(tableElem.childNodes.length, 2, "table 要素の子ノードは 2 個");
-    var theadElem = tableElem.firstChild;
-    QUnit.strictEqual(theadElem.tagName, "THEAD", "table 要素の 1 つ目の子ノードは thead 要素");
-    QUnit.strictEqual(theadElem.childNodes.length, 1, "thead 要素の子ノードは 1 個");
-    var tbodyElem = theadElem.nextSibling;
-    QUnit.strictEqual(tbodyElem.tagName, "TBODY", "table 要素の 2 つ目の子ノードは tbody 要素");
-    QUnit.strictEqual(tbodyElem.childNodes.length, 3, "tbody 要素の子ノードは 3 個");
-
-    var expectedTrElem = document.createElement("tr");
-
-    var actualTheadTrElem = theadElem.firstChild;
-    expectedTrElem.innerHTML = "<th>path</th><th>reqtime_microsec</th>";
-    QUnit.ok(expectedTrElem.isEqualNode(actualTheadTrElem),
-            "thead 要素の子要素の tr 要素の中身: " + expectedTrElem.innerHTML);
-
-    var actualTbodyTrElem = tbodyElem.firstChild;
-    expectedTrElem.innerHTML = "<td>/</td><td>400000</td>";
-    QUnit.ok(expectedTrElem.isEqualNode(actualTbodyTrElem),
-            "tbody 要素の子要素の 1 番目の tr 要素の中身: " + expectedTrElem.innerHTML);
-
-    actualTbodyTrElem = actualTbodyTrElem.nextSibling;
-    expectedTrElem.innerHTML = "<td>/uname</td><td>123456</td>";
-    QUnit.ok(expectedTrElem.isEqualNode(actualTbodyTrElem),
-            "tbody 要素の子要素の 2 番目の tr 要素の中身: " + expectedTrElem.innerHTML);
+QUnit.test("`parseDat` 関数の動作確認", function () {
+    var dat = "デフォルトの名無しさん<><>2007/07/15(日) 16:16:50 <> 俺、がんばる。みてて。 <>Perlを使って２ちゃんねるにHello Worldを書き込む\nデフォルトの名無しさん<>sage<>2007/07/15(日) 16:23:17 <> とりあえず、http://www.activestate.com/ からperlをインストール。 <br>  <br> というか、すでに入っているんだけど^^; <>\nデフォルトの名無しさん<>sage<>2007/07/15(日) 16:46:02 <> さて、httpをしゃべるライブラリには何を使ったら良いだろうか？ <br> むかしLWP::Simpleを使ったことはあるとはいえ、 <br> Simpleっていうぐらいだからもっと高度なことをするときには <br> 別のものがいいのだろうか？ <br>  <>";
+    
+    var elem = $("#qunit-fixture");    
+    elem.append($(parseDat(dat)));
+    var thread = elem.find("#thread_title")[0];
+    console.log(elem.children("a"));
+    QUnit.strictEqual(elem.children("a").length, 3, "レス数の分だけ a 要素（ラベル）が存在する");
+    QUnit.strictEqual(elem.children("#thread_title").length, 1, "スレタイ要素がただ 1 つ存在する");
 
 });

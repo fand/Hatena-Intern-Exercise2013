@@ -21,8 +21,10 @@ function parseLTSVLog(logStr){
         for (var j=0; j < fields.length; j++) {
             // valueが数値の場合、(") を付けてはいけない
             var f = fields[j].split(re_colon);
+            console.log(f);
             var key = '\"' + f[0] + '\"';
-            var value = (f[1].match(/\D/gi))? ('\"' + f[1] + '\"') : f[1];
+            var value = f.slice(1).join(':');
+            value = (value.match(/\D/gi))? ('\"' + f[1] + '\"') : f[1];
             str_json += key + ":" + value;
 
             // (,) の処理. JSON.parseは (,) にうるさい…

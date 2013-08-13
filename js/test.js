@@ -32,7 +32,9 @@ QUnit.test("`parseLTSVLog` 関数の動作確認", function () {
     QUnit.deepEqual(logRecords, [], "空文字列を渡したときは空の配列を返す");
 
     // テストを追加する場合は、この下に追加しても構いませんし、
-    // `QUnit.test` 関数や `QUnit.asyncTest` 関数を用いて別に定義しても良いです。
+    QUnit.deepEqual(parseLTSVLog("url : http://2ch.net/"), [
+        { url: "http://2ch.net" }
+    ], "1 行のみのログデータが期待通りパースされる");
 
 });
 
